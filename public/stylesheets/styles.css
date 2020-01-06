@@ -1,0 +1,48 @@
+body {
+  font: 14px sans-serif;
+}
+
+span.legend {
+  display:inline-block;
+  font-weight:bold;
+  width:101px;
+  text-align:center;
+  vertical-align: middle;
+}
+
+span.legendImpact {
+  display:inline-block;
+  font-weight:bold;
+  width:59px;
+  text-align:center;
+}
+
+div.legend {
+  display:inline-block;
+  font-weight:bold;
+  width:101px;
+  text-align:center;
+  vertical-align: middle;
+}
+
+table.legend {
+  border:1px black solid;
+  padding: 5px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+input[type=checkbox] {
+  margin-top: 2px;
+  float: right;
+  padding: 15px;
+}
