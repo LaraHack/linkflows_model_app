@@ -12,6 +12,7 @@
     "express-es6-template-engine": "^2.2.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "virtuoso-sparql-client": "^0.2.2"
   }
 }
