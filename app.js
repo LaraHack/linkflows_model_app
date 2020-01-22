@@ -33,9 +33,9 @@ app.use('/hello', helloRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  // res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next(createError(404));
 });
 
