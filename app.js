@@ -7,6 +7,7 @@ var es6Renderer = require('express-es6-template-engine');
 
 var indexRouter = require('./routes/index');
 var editorsRouter = require('./routes/editors');
+var helloRouter = require('./routes/hello');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/editors', editorsRouter);
+app.use('/hello', helloRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
