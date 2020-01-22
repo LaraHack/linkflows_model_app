@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
   //   res.send("Hello from server");
   // res.render('index', {locals: {title: 'Welcome!'}});
   res.send("Hi, this message is from the server! :)");
-  // res.render('index', { title: 'Message sent to client' });
+  // res.render('index', { message: 'Hi' });
 });
 
 module.exports = router;

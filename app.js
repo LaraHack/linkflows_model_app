@@ -11,7 +11,7 @@ var cors = require('cors')
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
 
-var whitelist = ['http://127.0.0.1:3000', 'http://example2.com']
+var whitelist = ['http://127.0.0.1:3000', 'http://127.0.0.1:8081']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -30,20 +30,21 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
+app.set('view engine', 'jade');
 
-app.engine('html', es6Renderer);
-//app.set('views', 'views');
-app.set('view engine', 'html');
+// app.engine('html', es6Renderer);
+app.set('views', 'views');
+// app.set('view engine', 'html');
 
-// app.use(cors());
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', cors(corsOptions), indexRouter);
+app.use('/', indexRouter);
+// app.use('/', cors(corsOptions), indexRouter);
 app.use('/editors', editorsRouter);
 app.use('/hello', helloRouter);
 
