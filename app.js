@@ -6,6 +6,22 @@ var logger = require('morgan');
 var es6Renderer = require('express-es6-template-engine');
 var cors = require('cors')
 
+// var corsOptions = {
+//   origin: 'http://127.0.0.1:3000',
+//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+// }
+
+var whitelist = ['http://127.0.0.1:3000', 'http://example2.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+
 var indexRouter = require('./routes/index');
 var editorsRouter = require('./routes/editors');
 var helloRouter = require('./routes/hello');
@@ -33,9 +49,6 @@ app.use('/hello', helloRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  // res.header("Access-Control-Allow-Origin", "*");
-  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  // res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next(createError(404));
 });
 
