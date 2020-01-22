@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var es6Renderer = require('express-es6-template-engine');
+var cors = require('cors')
 
 var indexRouter = require('./routes/index');
 var editorsRouter = require('./routes/editors');
@@ -19,6 +20,7 @@ app.engine('html', es6Renderer);
 //app.set('views', 'views');
 app.set('view engine', 'html');
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
