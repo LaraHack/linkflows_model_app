@@ -11,16 +11,16 @@ var cors = require('cors')
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
 
-var whitelist = ['http://127.0.0.1:3000', 'http://127.0.0.1:8081']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+// var whitelist = ['http://127.0.0.1:3000', 'http://127.0.0.1:8081']
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
 
 var indexRouter = require('./routes/index');
 var editorsRouter = require('./routes/editors');
@@ -36,6 +36,7 @@ app.set('view engine', 'jade');
 app.set('views', 'views');
 // app.set('view engine', 'html');
 
+// app.use(cors(corsOptions));
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -63,9 +64,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// app.get('/', function (req, res) {
-//   res.send('Hello World!')
-// })
 
 module.exports = app;
