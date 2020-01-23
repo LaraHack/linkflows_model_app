@@ -16,6 +16,7 @@ function downloadCsv(req, res) {
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Pragma', 'no-cache');
 
+console.log(csvParse(dataEditors));
   // stringify returns a readable stream that can be directly piped to a
   // writeable stream which is "res" (the response object)
   csvParse(dataEditors, { header: true })
