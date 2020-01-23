@@ -1,8 +1,8 @@
 // code from https://github.com/aitchkhan/express-csv-download
 
-// package use to transform json to csv string
-const stringify = require('csv-stringify');
-const posts = require('../posts.json');
+// package used to transform json to csv string
+const csvParse = require('csv-parse');
+const dataEditors = require('../data.csv');
 
 module.exports = {
   downloadCsv
@@ -16,6 +16,8 @@ function downloadCsv(req, res) {
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Pragma', 'no-cache');
 
-  stringify(posts, { header: true })
+  // stringify returns a readable stream that can be directly piped to a
+  // writeable stream which is "res" (the response object)
+  csvParse(dataEditors, { header: true })
     .pipe(res);
 };
