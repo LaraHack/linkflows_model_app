@@ -1,21 +1,27 @@
-// code from https://github.com/aitchkhan/express-csv-download
-
 // package used to transform json to csv string
 const csv = require('csv-parser');
 const fs = require('fs');
-// const dataEditors = require('../data.csv');
+
+const dataEditors = './public/files/data.csv';
 
 module.exports = {
   downloadCsv
 };
 
 function downloadCsv(req, res) {
-  fs.createReadStream("../public/files/data_with_quotes.csv")
+  fs.createReadStream(dataEditors)
     .pipe(csv({separator: ","}))
+    .on("error", (err) => {
+      res.send(err);
+      console.log("error:" + err);
+    })
     .on("data", (row) => {
+      res.write(row);
       console.log(row);
     })
     .on("end", () => {
+      res.send();
+      res.end();
       console.log("CSV file read");
     });
 

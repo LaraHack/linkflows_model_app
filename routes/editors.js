@@ -2,12 +2,6 @@ var express = require('express');
 var router = express.Router();
 const getCsvCtrl = require('../controllers/getCsv');
 
-const csv = require('csv-parser');
-const fs = require('fs');
-
-// const dataEditors = require('../public/files/data_with_quotes.csv');
-const dataEditors = './public/files/data.csv';
-
 /* GET . */
 // router.get('/csv', getCsvCtrl.downloadCsv);
 router.get('/csv', (req, res, next) => {
@@ -23,20 +17,8 @@ router.get('/csv', (req, res, next) => {
     // res.status(200).sendFile('data.csv');
 
     // res.download(dataEditors);
-
-  fs.createReadStream(dataEditors)
-    .on("error", (err) => {
-      console.log("error:" + err);
-    })
-    .pipe(csv({separator: ","}))
-    .on("data", (row) => {
-      console.log(row);
-    })
-    .on("end", () => {
-      console.log("CSV file read");
-    });
-
-  // res.status(200).send(getCsvCtrl.downloadCsv);
+    // res.status(200).send(getCsvCtrl.downloadCsv(req, res));
+    getCsvCtrl.downloadCsv(req, res);
 });
 
 module.exports = router;
