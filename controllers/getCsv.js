@@ -9,20 +9,22 @@ module.exports = {
 };
 
 function downloadCsv(req, res) {
+  // res.setHeader('Content-Type', 'text/csv');
+
   fs.createReadStream(dataEditors)
     .pipe(csv({separator: ","}))
     .on("error", (err) => {
+      // res.end(err);
       console.log("error:" + err);
-      res.end(err);
     })
     .on("data", (row) => {
+      // res.setHeader('Content-Type', 'text/csv');
+      // res.write(row);
       console.log(row);
-      res.write(row);
     })
     .on("end", () => {
+      // res.end();
       console.log("CSV file read");
-      res.setHeader('Content-Type', 'text/csv');
-      res.end();
     });
 
 //
