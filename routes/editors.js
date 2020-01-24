@@ -6,7 +6,7 @@ const csv = require('csv-parser');
 const fs = require('fs');
 
 // const dataEditors = require('../public/files/data_with_quotes.csv');
-// const dataEditors = require('../data.csv');
+// const dataEditors = require('data.csv');
 
 /* GET . */
 // router.get('/csv', getCsvCtrl.downloadCsv);
@@ -18,7 +18,11 @@ router.get('/csv', (req, res, next) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Pragma', 'no-cache');
 
-    res.attachment(dataEditors);
+    res.attachment('data.csv');
+
+    res.status(200).end();
+
+    // res.download(dataEditors);
 
   // fs.createReadStream('data_with_quotes.csv')
   //   .pipe(csv({separator: ","}))
