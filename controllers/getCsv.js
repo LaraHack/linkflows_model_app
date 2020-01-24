@@ -9,7 +9,7 @@ module.exports = {
 };
 
 function downloadCsv(req, res) {
-  // res.setHeader('Content-Type', 'text/csv');
+  var csvData = [];
 
   fs.createReadStream(dataEditors)
     .pipe(csv({separator: ","}))
@@ -21,10 +21,14 @@ function downloadCsv(req, res) {
       // res.setHeader('Content-Type', 'text/csv');
       // res.write(row);
       console.log(row);
+      csvData.push(row);
     })
     .on("end", () => {
       // res.end();
       console.log("CSV file read");
+      console.log(csvData);
+      res.setHeader('Content-Type', 'text/csv');
+      res.send(csvData);
     });
 
 //
