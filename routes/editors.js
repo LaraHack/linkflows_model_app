@@ -11,16 +11,23 @@ const fs = require('fs');
 /* GET . */
 // router.get('/csv', getCsvCtrl.downloadCsv);
 router.get('/csv', (req, res, next) => {
-  // res.attachment(dataEditors);
+    // adding appropriate headers, so browsers can start downloading
+    // file as soon as this request starts to get served
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'download-' + Date.now() + '.csv\"');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Pragma', 'no-cache');
 
-  fs.createReadStream('data.csv')
-    .pipe(csv({separator: ","}))
-    .on("data", (row) => {
-      console.log(row);
-    })
-    .on("end", () => {
-      console.log("CSV file read");
-    });
+    res.attachment(dataEditors);
+
+  // fs.createReadStream('data_with_quotes.csv')
+  //   .pipe(csv({separator: ","}))
+  //   .on("data", (row) => {
+  //     console.log(row);
+  //   })
+  //   .on("end", () => {
+  //     console.log("CSV file read");
+  //   });
 
   // res.status(200).send(getCsvCtrl.downloadCsv);
 });

@@ -18,12 +18,7 @@ function downloadCsv(req, res) {
     .on("end", () => {
       console.log("CSV file read");
     });
-//   // adding appropriate headers, so browsers can start downloading
-//   // file as soon as this request starts to get served
-//   res.setHeader('Content-Type', 'text/csv');
-//   res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'download-' + Date.now() + '.csv\"');
-//   res.setHeader('Cache-Control', 'no-cache');
-//   res.setHeader('Pragma', 'no-cache');
+
 //
 // // console.log(csvParse(dataEditors));
 //   // stringify returns a readable stream that can be directly piped to a
