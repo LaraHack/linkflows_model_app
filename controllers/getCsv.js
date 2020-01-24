@@ -10,7 +10,7 @@ module.exports = {
 };
 
 function downloadCsv(req, res) {
-  fs.createReadStream("../data.csv")
+  fs.createReadStream("../public/files/data_with_quotes.csv")
     .pipe(csv({separator: ","}))
     .on("data", (row) => {
       console.log(row);
