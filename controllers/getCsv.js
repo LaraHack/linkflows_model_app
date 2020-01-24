@@ -12,17 +12,17 @@ function downloadCsv(req, res) {
   fs.createReadStream(dataEditors)
     .pipe(csv({separator: ","}))
     .on("error", (err) => {
-      res.send(err);
       console.log("error:" + err);
+      res.end(err);
     })
     .on("data", (row) => {
-      res.write(row);
       console.log(row);
+      res.write(row);
     })
     .on("end", () => {
-      res.send();
-      res.end();
       console.log("CSV file read");
+      res.setHeader('Content-Type', 'text/csv');
+      res.end();
     });
 
 //
