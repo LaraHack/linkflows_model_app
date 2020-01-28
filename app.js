@@ -25,6 +25,7 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 var editorsRouter = require('./routes/editors');
 var helloRouter = require('./routes/hello');
+var sparqlRouter = require('./routes/sparql');
 
 var app = express();
 
@@ -48,6 +49,7 @@ app.use('/', indexRouter);
 // app.use('/', cors(corsOptions), indexRouter);
 app.use('/editors', editorsRouter);
 app.use('/hello', helloRouter);
+app.use('/sparql', helloRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
