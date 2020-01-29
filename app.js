@@ -49,7 +49,7 @@ app.use('/', indexRouter);
 // app.use('/', cors(corsOptions), indexRouter);
 app.use('/editors', editorsRouter);
 app.use('/hello', helloRouter);
-app.use('/sparql', helloRouter);
+app.use('/sparql', sparqlRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
