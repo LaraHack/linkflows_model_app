@@ -10,18 +10,19 @@ module.exports = {
   test
 };
 
-var sparqlEndpoint = "http://dbpedia.org/sparql";
+var sparqlEndpoint1 = "http://dbpedia.org/sparql";
+var sparqlEndpoint2 = "http://localhost:8890/sparql";
 
 var testQuery1 = "DESCRIBE <http://dbpedia.org/resource/Sardinia>";
 var testQuery2 = "SELECT DISTINCT ?concept WHERE { ?s a ?concept .} LIMIT 50";
 
 function test(req, res) {
-  const DbPediaClient = new Client(sparqlEndpoint);
+  const DbPediaClient = new Client(sparqlEndpoint1);
   DbPediaClient.query(testQuery1)
     .then((results) => {
       console.log("Inside function");
       console.log(results);
-      res.send(results);
+      res.send(JSON.stringify(results));
     })
     .catch((err) => {
       console.log("Inside error");
