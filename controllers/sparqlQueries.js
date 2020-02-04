@@ -17,6 +17,7 @@ var testQuery1 = "DESCRIBE <http://dbpedia.org/resource/Sardinia>";
 var testQuery2 = "SELECT DISTINCT ?concept WHERE { ?s a ?concept .} LIMIT 50";
 
 function test(req, res) {
+  console.log("req: " + req);
   const DbPediaClient = new Client(sparqlEndpoint1);
   DbPediaClient.query(testQuery1)
     .then((results) => {
@@ -63,3 +64,7 @@ function test(req, res) {
 //     console.log(err);
 //   });
 // }
+
+function buildQueryTemplate(req, res) {
+  var checkboxes = JSON.stringify(req.body));
+}

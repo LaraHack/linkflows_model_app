@@ -7,4 +7,9 @@ router.get('/', (req, res, next) => {
   sparqlQueries.test(req, res);
 });
 
+/* PUT . */
+router.put('/', (req, res, next) => {
+  console.log('request =' + JSON.stringify(request.body));
+});
+
 module.exports = router;
