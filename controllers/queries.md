@@ -56,3 +56,61 @@ WHERE {
   GRAPH ?assertion { ?c a ?type . }
   ?assertion prov:wasAttributedTo ?reviewer .
 } GROUP BY ?reviewer ?level ORDER BY ?reviewer
+
+
+### example query from form, built dynamically from Javascript
+
+Assumptions (checked checkboxes):
+
+Article level: section, paragraph
+Aspect: syntax, content
+Pos/Neg: negative, neutral, positive
+Impact: 3, 4, 5
+Action needed: compulsory
+
+#### Query logic (declarative)
+
+Retrieve number of review comments per reviewer that:
+ - target a certain part of the given article URI ```AND```
+ - the part targeted in the article is a section or a paragraph ```AND```
+ - the review comments are about syntax or content ```AND```
+ - the review comments are negative or neutral or positive ```AND```
+ - the impact is 3 or 4 or 5 ```AND```
+ - the action needed by author is compulsory to be addressed
+
+#### Query logic with some pseudo-SPARQL
+
+ Retrieve number of review comments per reviewer (```GROUP BY ?reviewer  ORDER BY ASC(?reviewer)``` )
+ ```
+ GRAPH ?assertion {...}
+ ?assertion prov:wasAttributedTo ?reviewer .
+ ...
+ ?reviewComment a linkflows:ReviewComment .
+ ```
+ that:
+  - target a certain part of the given article URI ```AND```
+    ```
+    <http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>
+      (po:contains)* ?subpart .
+    ```
+
+  - the part targeted in the article is a section or a paragraph ```AND```
+    ```
+    ?reviewComment linkflows:refersTo ?subpart .
+    ...
+    ?subpart a doco:Section OR ?subpart a doco:Paragraph .
+      ```
+
+  - the review comments are about syntax or content ```AND```
+  - the review comments are negative or neutral or positive ```AND```
+  - the impact is 3 or 4 or 5 ```AND```
+    ```
+    VALUES ?type { linkflows:NegativeComment linkflows:NeutralComment linkflows:PositiveComment }
+    GRAPH ?assertion { ?c a ?type ; linkflows:hasImpact ?impact . }
+    FILTER (?impact = "3"^^xsd:positiveInteger || ?impact = "4"^^xsd:positiveInteger || ?impact = "5"^^xsd:positiveInteger) .
+    ```
+
+  - the action needed by author is compulsory to be addressed
+    ```
+    GRAPH ?assertion { ?reviewComment a linkflows:ActionNeededComment }
+    ```
