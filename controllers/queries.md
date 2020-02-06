@@ -130,11 +130,22 @@ Retrieve number of review comments per reviewer that:
     <http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>
       (po:contains)* ?subpart .
 
+    ?reviewComment linkflows:refersTo ?subpart .
+    {
+      ?subpart a doco:Section .
+    } UNION {
+      ?subpart a doco:Paragraph .
+    }
+
     VALUES ?type { linkflows:NegativeComment linkflows:NeutralComment linkflows:PositiveComment }
 
-    GRAPH ?assertion { ?c a ?type ; linkflows:hasImpact ?impact ; ?reviewComment a linkflows:ActionNeededComment }
+    GRAPH ?assertion {
+      ?c a ?type ;
+      ?reviewCommentlinkflows:hasImpact ?impact ;
+      ?reviewComment a linkflows:ActionNeededComment
+    }
     FILTER (?impact = "3"^^xsd:positiveInteger || ?impact = "4"^^xsd:positiveInteger || ?impact = "5"^^xsd:positiveInteger) .
 
     ?assertion prov:wasAttributedTo ?reviewer .
-  }
+  } GROUP BY ?reviewer  ORDER BY ASC(?reviewer)
   ```
