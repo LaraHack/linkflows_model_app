@@ -65,6 +65,36 @@ function test(req, res) {
 //   });
 // }
 
+// var checkedDimensions = new Map([
+//   ["article", true],
+//   ["section", true],
+//   ["paragraph", true],
+//   ["syntax", true],
+//   ["style", true],
+//   ["content", true],
+//   ["negative", true],
+//   ["neutral", true],
+//   ["positive", true],
+//   ["I1", true],
+//   ["I2", true],
+//   ["I3", true],
+//   ["I4", true],
+//   ["I5", true],
+//   ["compulsory", true],
+//   ["suggestion", true],
+//   ["no_action", true]
+// ]);
+
+// Assumptions (checked checkboxes):
+//
+// Article level: section, paragraph
+// Aspect: syntax, content
+// Pos/Neg: negative, neutral, positive
+// Impact: 3, 4, 5
+// Action needed: compulsory
+
 function buildQueryTemplate(req, res) {
-  var checkboxes = JSON.stringify(req.body));
+  var checkboxes = JSON.parse(req.body);
+
+  if (checkboxes.article)
 }
