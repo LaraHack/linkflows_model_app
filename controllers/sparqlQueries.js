@@ -94,9 +94,26 @@ function test(req, res) {
 // Action needed: compulsory
 
 function buildQueryTemplate(req, res) {
+  //get values from checkboxes sent by client
   var checkboxes = JSON.parse(req.body);
 
-  
+  var article = (checkboxes.article == 'true');
+  var section = (checkboxes.section == 'true');
+  var paragraph = (checkboxes.paragraph == 'true');
+  var syntax = (checkboxes.syntax == 'true');
+  var style = (checkboxes.style == 'true');
+  var content = (checkboxes.content == 'true');
+  var negative = (checkboxes.negative == 'true');
+  var neutral = (checkboxes.neutral == 'true');
+  var positive = (checkboxes.positive == 'true');
+  var I1 = (checkboxes.I1 == 'true');
+  var I2 = (checkboxes.I2 == 'true');
+  var I3 = (checkboxes.I3 == 'true');
+  var I4 = (checkboxes.I4 == 'true');
+  var I5 = (checkboxes.I5 == 'true');
+  var compulsory = (checkboxes.compulsory == 'true');
+  var suggestion = (checkboxes.suggestion == 'true');
+  var no_action = (checkboxes.no_action == 'true');
 
   if (checkboxes.article)
     // PREFIX doco: <http://purl.org/spar/doco/>
