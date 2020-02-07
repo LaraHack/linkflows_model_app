@@ -115,12 +115,12 @@ function buildQueryTemplate(req, res) {
   var suggestion = (checkboxes.suggestion == 'true');
   var no_action = (checkboxes.no_action == 'true');
 
-  var prefixes = encodeURIComponent("PREFIX doco: <http://purl.org/spar/doco/>
-      PREFIX dcterms: <http://purl.org/dc/terms/>
-      PREFIX po: <http://www.essepuntato.it/2008/12/pattern#>
-      PREFIX prov: <http://www.w3.org/ns/prov#>
-      PREFIX linkflows: <https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#>
-      ");;
+  // var prefixes = encodeURIComponent("PREFIX doco: <http://purl.org/spar/doco/>
+  //     PREFIX dcterms: <http://purl.org/dc/terms/>
+  //     PREFIX po: <http://www.essepuntato.it/2008/12/pattern#>
+  //     PREFIX prov: <http://www.w3.org/ns/prov#>
+  //     PREFIX linkflows: <https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#>
+  //     ");
 
     // SELECT (COUNT(?reviewCommentArticle) AS ?commentsPerArticle) (COUNT(?reviewCommentSection) AS ?commentsPerSections) (COUNT(?reviewCommentParagraph) AS ?commentsPerParagraph)
     // WHERE {
