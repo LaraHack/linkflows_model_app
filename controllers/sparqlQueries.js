@@ -115,18 +115,16 @@ function buildQueryTemplate(req, res) {
   var suggestion = (checkboxes.suggestion == 'true');
   var no_action = (checkboxes.no_action == 'true');
 
-  var prefixes = encodeURIComponent("PREFIX doco: <http://purl.org/spar/doco/>
-      PREFIX dcterms: <http://purl.org/dc/terms/>
-      PREFIX po: <http://www.essepuntato.it/2008/12/pattern#>
-      PREFIX prov: <http://www.w3.org/ns/prov#>
-      PREFIX linkflows: <https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#>
-      ");
+  var prefixes = "PREFIX doco: " + encodeURIComponent("<http://purl.org/spar/doco/>") +
+      "\n PREFIX dcterms: " + encodeURIComponent("<http://purl.org/dc/terms/>") +
+      "\n PREFIX po: " + encodeURIComponent("<http://www.essepuntato.it/2008/12/pattern#>") +
+      "\n PREFIX prov: " + encodeURIComponent("<http://www.w3.org/ns/prov#>") +
+      "\n PREFIX linkflows: " + encodeURIComponent("<https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#>");
 
-    SELECT (COUNT(?reviewCommentArticle) AS ?commentsPerArticle) (COUNT(?reviewCommentSection) AS ?commentsPerSections) (COUNT(?reviewCommentParagraph) AS ?commentsPerParagraph)
-    WHERE {
-      <http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>
-        (po:contains)* ?subpart .
+  var queryIntro = "SELECT (COUNT(?reviewCommentArticle) AS ?commentsPerArticle) (COUNT(?reviewCommentSection) AS ?commentsPerSections) (COUNT(?reviewCommentParagraph) AS ?commentsPerParagraph)
+  WHERE {" + encodeURIComponent("<http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>") + " (po:contains)* ?subpart .";
 
+  if ()
       ?reviewComment linkflows:refersTo ?subpart .
       {
         ?subpart a doco:Section .
