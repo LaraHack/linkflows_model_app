@@ -124,23 +124,22 @@ function buildQueryTemplate(req, res) {
   var queryIntro = "SELECT (COUNT(?reviewCommentArticle) AS ?commentsPerArticle) (COUNT(?reviewCommentSection) AS ?commentsPerSections) (COUNT(?reviewCommentParagraph) AS ?commentsPerParagraph)
   WHERE {" + encodeURIComponent("<http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>") + " (po:contains)* ?subpart .";
 
-  if ()
-      ?reviewComment linkflows:refersTo ?subpart .
-      {
-        ?subpart a doco:Section .
-      } UNION {
-        ?subpart a doco:Paragraph .
-      }
+  if (section) {
+    queryIntro.concat("\n" + "?reviewComment linkflows:refersTo ?subpart . " +
+    "\n { ?subpart a doco:Section . \n }"
+  }
+  if (paragraph) {
+    queryIntro.concat("\n" + "UNION { ?subpart a doco:Paragraph .}");
+  }
 
-      VALUES ?type { linkflows:NegativeComment linkflows:NeutralComment linkflows:PositiveComment }
+  queryIntro.concat("\n" + "VALUES ?type { ");
+  if (negative) queryIntro.concat("linkflows:NegativeComment");
+  if (neutral) queryIntro.concat(" linkflows:NeutralComment");
+  if (positive) queryIntro.concat(" linkflows:PositiveComment");
+  queryIntro.concat("}");
 
-      GRAPH ?assertion {
-        ?c a ?type ;
-        ?reviewCommentlinkflows:hasImpact ?impact ;
-        ?reviewComment a linkflows:ActionNeededComment
-      }
-      FILTER (?impact = "3"^^xsd:positiveInteger || ?impact = "4"^^xsd:positiveInteger || ?impact = "5"^^xsd:positiveInteger) .
+  queryIntro.concat("\n" + "GRAPH ?assertion {?c a ?type ; ?reviewCommentlinkflows:hasImpact ?impact ; ?reviewComment a linkflows:ActionNeededComment }" + "\n" + "FILTER (?impact = "3"^^xsd:positiveInteger || ?impact = "4"^^xsd:positiveInteger || ?impact = "5"^^xsd:positiveInteger) .");
 
-      ?assertion prov:wasAttributedTo ?reviewer .
-    } GROUP BY ?reviewer  ORDER BY ASC(?reviewer)
+    //   ?assertion prov:wasAttributedTo ?reviewer .
+    // } GROUP BY ?reviewer  ORDER BY ASC(?reviewer)
 }
