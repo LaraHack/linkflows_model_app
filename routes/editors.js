@@ -18,6 +18,9 @@ router.get('/csv', (req, res, next) => {
 
     // res.download(dataEditors);
     // res.status(200).send(getCsvCtrl.downloadCsv(req, res));
+    console.log("BODY REQ");
+    console.log(req.query);
+    console.log("/BODY REQ");
     getCsvCtrl.downloadCsv(req, res);
 });
 

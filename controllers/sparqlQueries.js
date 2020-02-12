@@ -7,7 +7,8 @@ const fs = require('fs');
 const {Client, Node, Text, Data, Triple} = require('virtuoso-sparql-client');
 
 module.exports = {
-  test
+  test,
+  buildQuery
 };
 
 var sparqlEndpoint1 = "http://dbpedia.org/sparql";
@@ -15,15 +16,20 @@ var sparqlEndpoint2 = "http://localhost:8890/sparql";
 
 var testQuery1 = "DESCRIBE <http://dbpedia.org/resource/Sardinia>";
 var testQuery2 = "SELECT DISTINCT ?concept WHERE { ?s a ?concept .} LIMIT 50";
+var testQuery3 = "SELECT (COUNT(*) as ?Triples) WHERE { ?s ?p ?o .}";
+var testQuery4 = "SELECT * WHERE { ?article a doco:Article . ?article dcterms:title ?title .}";
 
 function test(req, res) {
   console.log("req: " + req);
-  const DbPediaClient = new Client(sparqlEndpoint1);
-  DbPediaClient.query(testQuery1)
+  const SPARQLClient = new Client(sparqlEndpoint2);
+
+  SPARQLClient.query(testQuery4)
     .then((results) => {
       console.log("Inside function");
       console.log(results);
-      res.send(JSON.stringify(results));
+      console.log("IN JSON++++++++++++++++");
+      console.log(JSON.stringify(results));
+      res.send(results);
     })
     .catch((err) => {
       console.log("Inside error");
@@ -93,9 +99,12 @@ function test(req, res) {
 // Impact: 3, 4, 5
 // Action needed: compulsory
 
-function buildQueryTemplate(req, res) {
+function buildQuery(req, res) {
   //get values from checkboxes sent by client
   var checkboxes = JSON.parse(req.body);
+
+  console.log("Checkboxes:");
+  console.log(checkboxes);
 
   var article = (checkboxes.article == 'true');
   var section = (checkboxes.section == 'true');
@@ -115,30 +124,38 @@ function buildQueryTemplate(req, res) {
   var suggestion = (checkboxes.suggestion == 'true');
   var no_action = (checkboxes.no_action == 'true');
 
-  var prefixes = "PREFIX doco: " + encodeURIComponent("<http://purl.org/spar/doco/>") +
-      "\n PREFIX dcterms: " + encodeURIComponent("<http://purl.org/dc/terms/>") +
-      "\n PREFIX po: " + encodeURIComponent("<http://www.essepuntato.it/2008/12/pattern#>") +
-      "\n PREFIX prov: " + encodeURIComponent("<http://www.w3.org/ns/prov#>") +
-      "\n PREFIX linkflows: " + encodeURIComponent("<https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#>");
+  const prefixes = {
+    doco: "http://purl.org/spar/doco/",
+    dcterms: "http://purl.org/dc/terms/",
+    po: "http://www.essepuntato.it/2008/12/pattern#",
+    prov: "http://www.w3.org/ns/prov#",
+    linkflows: "https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#"
+  };
 
-  var queryIntro = "SELECT (COUNT(?reviewCommentArticle) AS ?commentsPerArticle) (COUNT(?reviewCommentSection) AS ?commentsPerSections) (COUNT(?reviewCommentParagraph) AS ?commentsPerParagraph)
-  WHERE {" + encodeURIComponent("<http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>") + " (po:contains)* ?subpart .";
-
-  if (section) {
-    queryIntro.concat("\n" + "?reviewComment linkflows:refersTo ?subpart . " +
-    "\n { ?subpart a doco:Section . \n }"
-  }
-  if (paragraph) {
-    queryIntro.concat("\n" + "UNION { ?subpart a doco:Paragraph .}");
-  }
-
-  queryIntro.concat("\n" + "VALUES ?type { ");
-  if (negative) queryIntro.concat("linkflows:NegativeComment");
-  if (neutral) queryIntro.concat(" linkflows:NeutralComment");
-  if (positive) queryIntro.concat(" linkflows:PositiveComment");
-  queryIntro.concat("}");
-
-  queryIntro.concat("\n" + "GRAPH ?assertion {?c a ?type ; ?reviewCommentlinkflows:hasImpact ?impact ; ?reviewComment a linkflows:ActionNeededComment }" + "\n" + "FILTER (?impact = "3"^^xsd:positiveInteger || ?impact = "4"^^xsd:positiveInteger || ?impact = "5"^^xsd:positiveInteger) .");
+  // var prefixes = "PREFIX doco: " + encodeURIComponent("<http://purl.org/spar/doco/>") +
+  //     "\n PREFIX dcterms: " + encodeURIComponent("<http://purl.org/dc/terms/>") +
+  //     "\n PREFIX po: " + encodeURIComponent("<http://www.essepuntato.it/2008/12/pattern#>") +
+  //     "\n PREFIX prov: " + encodeURIComponent("<http://www.w3.org/ns/prov#>") +
+  //     "\n PREFIX linkflows: " + encodeURIComponent("<https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#>");
+  //
+  // var queryIntro = "SELECT (COUNT(?reviewCommentArticle) AS ?commentsPerArticle) (COUNT(?reviewCommentSection) AS ?commentsPerSections) (COUNT(?reviewCommentParagraph) AS ?commentsPerParagraph)
+  // WHERE {" + encodeURIComponent("<http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>") + " (po:contains)* ?subpart .";
+  //
+  // if (section) {
+  //   queryIntro.concat("\n" + "?reviewComment linkflows:refersTo ?subpart . " +
+  //   "\n { ?subpart a doco:Section . \n }"
+  // }
+  // if (paragraph) {
+  //   queryIntro.concat("\n" + "UNION { ?subpart a doco:Paragraph .}");
+  // }
+  //
+  // queryIntro.concat("\n" + "VALUES ?type { ");
+  // if (negative) queryIntro.concat("linkflows:NegativeComment");
+  // if (neutral) queryIntro.concat(" linkflows:NeutralComment");
+  // if (positive) queryIntro.concat(" linkflows:PositiveComment");
+  // queryIntro.concat("}");
+  //
+  // queryIntro.concat("\n" + "GRAPH ?assertion {?c a ?type ; ?reviewCommentlinkflows:hasImpact ?impact ; ?reviewComment a linkflows:ActionNeededComment }" + "\n" + "FILTER (?impact = "3"^^xsd:positiveInteger || ?impact = "4"^^xsd:positiveInteger || ?impact = "5"^^xsd:positiveInteger) .");
 
     //   ?assertion prov:wasAttributedTo ?reviewer .
     // } GROUP BY ?reviewer  ORDER BY ASC(?reviewer)
