@@ -51,43 +51,87 @@ function buildQuery(req, res) {
   //get values from checkboxes sent by client
   var checkboxes = req.query;
 
-  var article = (checkboxes.article == 'true');
-  var section = (checkboxes.section == 'true');
-  var paragraph = (checkboxes.paragraph == 'true');
-  var syntax = (checkboxes.syntax == 'true');
-  var style = (checkboxes.style == 'true');
-  var content = (checkboxes.content == 'true');
-  var negative = (checkboxes.negative == 'true');
-  var neutral = (checkboxes.neutral == 'true');
-  var positive = (checkboxes.positive == 'true');
-  var I1 = (checkboxes.I1 == 'true');
-  var I2 = (checkboxes.I2 == 'true');
-  var I3 = (checkboxes.I3 == 'true');
-  var I4 = (checkboxes.I4 == 'true');
-  var I5 = (checkboxes.I5 == 'true');
-  var compulsory = (checkboxes.compulsory == 'true');
-  var suggestion = (checkboxes.suggestion == 'true');
-  var no_action = (checkboxes.no_action == 'true');
+  console.log("article:" + checkboxes.article);
+  console.log("section:" + checkboxes.section);
+  console.log("paragraph:" + checkboxes.paragraph);
+  console.log("syntax:" + checkboxes.syntax);
+  console.log("style:" + checkboxes.style);
+  console.log("content:" + checkboxes.content);
+  console.log("negative:" + checkboxes.negative);
+  console.log("neutral:" + checkboxes.neutral);
+  console.log("positive:" + checkboxes.positive);
+  console.log("I1:" + checkboxes.I1);
+  console.log("I2:" + checkboxes.I2);
+  console.log("I3:" + checkboxes.I3);
+  console.log("I4:" + checkboxes.I4);
+  console.log("I5:" + checkboxes.I5);
+  console.log("compulsory:" + checkboxes.compulsory);
+  console.log("suggestion:" + checkboxes.suggestion);
+  console.log("no_action:" + checkboxes.no_action);
 
-  console.log("article:" + article);
-  console.log("section:" + section);
-  console.log("paragraph:" + paragraph);
-  console.log("syntax:" + syntax);
-  console.log("style:" + style);
-  console.log("content:" + content);
-  console.log("negative:" + negative);
-  console.log("neutral:" + neutral);
-  console.log("positive:" + positive);
-  console.log("I1:" + I1);
-  console.log("I2:" + I2);
-  console.log("I3:" + I3);
-  console.log("I4:" + I4);
-  console.log("I5:" + I5);
-  console.log("compulsory:" + compulsory);
-  console.log("suggestion:" + suggestion);
-  console.log("no_action:" + no_action);
+  // add prefixes to the query
+  var queryPrefixes = buildPrefixes(prefixes);
 
-  queryAll();
+  // write query
+  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded " + "\n" +
+  "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
+    "?reviewComment linkflows:refersTo ?part . " + "\n" +
+    "VALUES ?partType { " +
+      ((checkboxes.article == 'true') ? ("doco:Article ") : "" ) +
+      ((checkboxes.section == 'true') ? ("doco:Section ") : "" ) +
+      ((checkboxes.paragraph == 'true') ? ("doco:Paragraph ") : "" ) +
+    "} " + "\n" +
+    "?part a ?partType ." + "\n" +
+    "VALUES ?aspect { " +
+      ((checkboxes.syntax == 'true') ? ("linkflows:SyntaxComment ") : "" ) +
+      ((checkboxes.style == 'true') ? ("linkflows:StyleComment ") : "" ) +
+      ((checkboxes.content == 'true') ? ("linkflows:ContentComment ") : "" ) +
+    "} " + "\n" +
+    "?reviewComment a ?aspect ." + "\n" +
+    "VALUES ?posNeg { " +
+      ((checkboxes.negative == 'true') ? ("linkflows:NegativeComment ") : "" ) +
+      ((checkboxes.neutral == 'true') ? ("linkflows:NeutralComment ") : "" ) +
+      ((checkboxes.positive == 'true') ? ("linkflows:PositiveComment ") : "" ) +
+    "} " + "\n" +
+    "?reviewComment a ?posNeg ." + "\n" +
+    "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
+    (
+      (checkboxes.I1 == 'true') && (checkboxes.I2 == 'true') && (checkboxes.I3 == 'true') &&
+      (checkboxes.I4 == 'true') && (checkboxes.I5 == 'true') ? "" :
+      ("FILTER ( " +
+        ( (checkboxes.I1 == 'true') ? ("?impact = '1'^^xsd:positiveInteger ") : "") +
+        ( (checkboxes.I2 == 'true') ?
+          ( ((checkboxes.I1 == 'true') ? "||" : "" ) + "?impact = '2'^^xsd:positiveInteger ") : ""
+        ) +
+        ( (checkboxes.I3 == 'true') ?
+          ( ( ((checkboxes.I1 == 'true') || (checkboxes.I2 == 'true')) ? "||" : "" ) +
+            "?impact = '3'^^xsd:positiveInteger ") : ""
+        ) +
+        ( (checkboxes.I4 == 'true') ?
+          ( ( ((checkboxes.I1 == 'true') || (checkboxes.I2 == 'true') ||
+               (checkboxes.I3 == 'true')) ? "||" : "" ) +
+              "?impact = '4'^^xsd:positiveInteger ") : ""
+        ) +
+        ( (checkboxes.I5 == 'true') ?
+          ( ( ((checkboxes.I1 == 'true') || (checkboxes.I2 == 'true') ||
+               (checkboxes.I3 == 'true') || (checkboxes.I4 == 'true')) ? "||" : "" ) +
+              "?impact = '5'^^xsd:positiveInteger ") : ""
+        ) +
+      " )" + "\n"
+      )
+    ) +
+    "VALUES ?actionNeeded { " +
+      ((checkboxes.compulsory == 'true') ? ("linkflows:ActionNeededComment ") : "" ) +
+      ((checkboxes.suggestion == 'true') ? ("linkflows:SuggestionComment ") : "" ) +
+      ((checkboxes.no_action == 'true') ? ("linkflows:NoActionNeededComment ") : "" ) +
+    "} " + "\n" +
+    "?reviewComment a ?actionNeeded ." +  "\n" +
+    "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
+    "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
+  "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
+  "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
+
+  console.log(queryPrefixes + query);
 }
 
 function buildPrefix(prefix, url) {
@@ -104,12 +148,13 @@ function buildPrefixes(prefixes) {
   return prefixesString;
 }
 
+// query for when all values are selected
 function queryAll() {
   // add prefixes to the query
   var queryPrefixes = buildPrefixes(prefixes);
 
   // write query
-  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact  ?actionNeeded " + "\n" +
+  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded " + "\n" +
   "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
     "?reviewComment linkflows:refersTo ?part . " + "\n" +
     "VALUES ?partType { doco:Article doco:Section doco:Paragraph } " + "\n" +
@@ -121,6 +166,7 @@ function queryAll() {
     "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
     "FILTER (?impact = '1'^^xsd:positiveInteger || ?impact = '2'^^xsd:positiveInteger || ?impact = '3'^^xsd:positiveInteger || ?impact = '4'^^xsd:positiveInteger || ?impact = '5'^^xsd:positiveInteger) ." + "\n" +
     "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
+    "?reviewComment a ?actionNeeded ." +  "\n" +
     "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
     "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
