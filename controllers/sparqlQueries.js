@@ -195,13 +195,15 @@ function queryAll() {
     linkflows: "https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#"
   };
 
-  var prefixesString;
+  var prefixesString = "";
 
   for (var prefix in prefixes) {
     // console.log(prefix, prefixes[prefix]);
-    console.log(buildPrefix(prefix, prefixes[prefix]));
-    // prefixesString.concat(buildPrefix(prefix, prefixes[prefix]));
+    // console.log(buildPrefix(prefix, prefixes[prefix]));
+    console.log(prefixesString.concat(buildPrefix(prefix, prefixes[prefix])));
   }
+
+  console.log("prefixesString:" + prefixesString);
   //
   // var articleTrustyURI = "http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1";
   //
