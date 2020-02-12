@@ -156,31 +156,24 @@ function buildQuery(req, res) {
     linkflows: "https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#"
   };
 
-  // var prefixes = "PREFIX doco: " + encodeURIComponent("<http://purl.org/spar/doco/>") +
-  //     "\n PREFIX dcterms: " + encodeURIComponent("<http://purl.org/dc/terms/>") +
-  //     "\n PREFIX po: " + encodeURIComponent("<http://www.essepuntato.it/2008/12/pattern#>") +
-  //     "\n PREFIX prov: " + encodeURIComponent("<http://www.w3.org/ns/prov#>") +
-  //     "\n PREFIX linkflows: " + encodeURIComponent("<https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#>");
-  //
-  // var queryIntro = "SELECT (COUNT(?reviewCommentArticle) AS ?commentsPerArticle) (COUNT(?reviewCommentSection) AS ?commentsPerSections) (COUNT(?reviewCommentParagraph) AS ?commentsPerParagraph)
-  // WHERE {" + encodeURIComponent("<http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1>") + " (po:contains)* ?subpart .";
-  //
-  // if (section) {
-  //   queryIntro.concat("\n" + "?reviewComment linkflows:refersTo ?subpart . " +
-  //   "\n { ?subpart a doco:Section . \n }"
-  // }
-  // if (paragraph) {
-  //   queryIntro.concat("\n" + "UNION { ?subpart a doco:Paragraph .}");
-  // }
-  //
-  // queryIntro.concat("\n" + "VALUES ?type { ");
-  // if (negative) queryIntro.concat("linkflows:NegativeComment");
-  // if (neutral) queryIntro.concat(" linkflows:NeutralComment");
-  // if (positive) queryIntro.concat(" linkflows:PositiveComment");
-  // queryIntro.concat("}");
-  //
-  // queryIntro.concat("\n" + "GRAPH ?assertion {?c a ?type ; ?reviewCommentlinkflows:hasImpact ?impact ; ?reviewComment a linkflows:ActionNeededComment }" + "\n" + "FILTER (?impact = "3"^^xsd:positiveInteger || ?impact = "4"^^xsd:positiveInteger || ?impact = "5"^^xsd:positiveInteger) .");
+  var articleTrustyURI = "http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1";
 
-    //   ?assertion prov:wasAttributedTo ?reviewer .
-    // } GROUP BY ?reviewer  ORDER BY ASC(?reviewer)
+  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact  ?actionNeeded " + "\n" +
+  "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
+    "?reviewComment linkflows:refersTo ?part . " + "\n" +
+    "VALUES ?partType { doco:Article doco:Section doco:Paragraph } " + "\n" +
+    "?part a ?partType ." + "\n" +
+    "VALUES ?aspect { linkflows:SyntaxComment linkflows:StyleComment linkflows:ContentComment } " + "\n" +
+    "?reviewComment a ?aspect ." + "\n" +
+    "VALUES ?posNeg { linkflows:PositiveComment linkflows:NeutralComment linkflows:NegativeComment }" + "\n" +
+    "?reviewComment a ?posNeg ." + "\n" +
+    "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
+    "FILTER (?impact = '1'^^xsd:positiveInteger || ?impact = '2'^^xsd:positiveInteger || ?impact = '3'^^xsd:positiveInteger || ?impact = '4'^^xsd:positiveInteger || ?impact = '5'^^xsd:positiveInteger) ." + "\n" +
+    "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
+    "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
+    "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
+  "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
+  "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
+
+  console.log(prefixes + "\n" + query);
 }
