@@ -183,7 +183,7 @@ function buildPrefix(prefix, url) {
   // console.log("________________________");
   // console.log("PREFIX " + prefix + ": <" + url + ">" + "\n");
   // console.log("________________________");
-  return "PREFIX " + prefix + ": <" + url + ">";
+  return "PREFIX " + prefix + ": <" + url + ">" + "\n";
 }
 
 function queryAll() {
@@ -198,12 +198,9 @@ function queryAll() {
   var prefixesString = "";
 
   for (var prefix in prefixes) {
-    // console.log(prefix, prefixes[prefix]);
-    // console.log(buildPrefix(prefix, prefixes[prefix]));
-    console.log(prefixesString.concat(buildPrefix(prefix, prefixes[prefix])));
+    prefixesString = prefixesString.concat(buildPrefix(prefix, prefixes[prefix]));
   }
 
-  console.log("prefixesString:" + prefixesString);
   //
   // var articleTrustyURI = "http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1";
   //
