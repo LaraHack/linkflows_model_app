@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const getCsvCtrl = require('../controllers/getCsv');
+const sparqlQueries = require('../controllers/sparqlQueries');
 
 /* GET . */
 // router.get('/csv', getCsvCtrl.downloadCsv);
@@ -18,10 +19,12 @@ router.get('/csv', (req, res, next) => {
 
     // res.download(dataEditors);
     // res.status(200).send(getCsvCtrl.downloadCsv(req, res));
-    console.log("BODY REQ");
-    console.log(req.query);
-    console.log("/BODY REQ");
-    getCsvCtrl.downloadCsv(req, res);
+    // getCsvCtrl.downloadCsv(req, res);
+
+    // console.log("BODY REQ");
+    // console.log(req.query);
+    // console.log("/BODY REQ");
+    sparqlQueries.buildQuery(req, res);
 });
 
 module.exports = router;

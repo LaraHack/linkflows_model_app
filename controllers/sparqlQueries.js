@@ -101,10 +101,15 @@ function test(req, res) {
 
 function buildQuery(req, res) {
   //get values from checkboxes sent by client
-  var checkboxes = JSON.parse(req.body);
 
-  console.log("Checkboxes:");
-  console.log(checkboxes);
+  // console.log("BODY REQ");
+  // console.log(req.query);
+  // console.log("/BODY REQ");
+
+  var checkboxes = req.query;
+
+  // console.log("Checkboxes:");
+  // console.log(checkboxes);
 
   var article = (checkboxes.article == 'true');
   var section = (checkboxes.section == 'true');
@@ -123,6 +128,25 @@ function buildQuery(req, res) {
   var compulsory = (checkboxes.compulsory == 'true');
   var suggestion = (checkboxes.suggestion == 'true');
   var no_action = (checkboxes.no_action == 'true');
+
+  console.log("article:" + article);
+  console.log("section:" + section);
+  console.log("paragraph:" + paragraph);
+  console.log("syntax:" + syntax);
+  console.log("style:" + style);
+  console.log("content:" + content);
+  console.log("negative:" + negative);
+  console.log("neutral:" + neutral);
+  console.log("positive:" + positive);
+  console.log("I1:" + I1);
+  console.log("I2:" + I2);
+  console.log("I3:" + I3);
+  console.log("I4:" + I4);
+  console.log("I5:" + I5);
+  console.log("compulsory:" + compulsory);
+  console.log("suggestion:" + suggestion);
+  console.log("no_action:" + no_action);
+
 
   const prefixes = {
     doco: "http://purl.org/spar/doco/",
