@@ -148,6 +148,45 @@ function buildQuery(req, res) {
   console.log("no_action:" + no_action);
 
 
+  // const prefixes = {
+  //   doco: "http://purl.org/spar/doco/",
+  //   dcterms: "http://purl.org/dc/terms/",
+  //   po: "http://www.essepuntato.it/2008/12/pattern#",
+  //   prov: "http://www.w3.org/ns/prov#",
+  //   linkflows: "https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#"
+  // };
+
+  queryAll();
+
+  // var articleTrustyURI = "http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1";
+  //
+  // var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact  ?actionNeeded " + "\n" +
+  // "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
+  //   "?reviewComment linkflows:refersTo ?part . " + "\n" +
+  //   "VALUES ?partType { doco:Article doco:Section doco:Paragraph } " + "\n" +
+  //   "?part a ?partType ." + "\n" +
+  //   "VALUES ?aspect { linkflows:SyntaxComment linkflows:StyleComment linkflows:ContentComment } " + "\n" +
+  //   "?reviewComment a ?aspect ." + "\n" +
+  //   "VALUES ?posNeg { linkflows:PositiveComment linkflows:NeutralComment linkflows:NegativeComment }" + "\n" +
+  //   "?reviewComment a ?posNeg ." + "\n" +
+  //   "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
+  //   "FILTER (?impact = '1'^^xsd:positiveInteger || ?impact = '2'^^xsd:positiveInteger || ?impact = '3'^^xsd:positiveInteger || ?impact = '4'^^xsd:positiveInteger || ?impact = '5'^^xsd:positiveInteger) ." + "\n" +
+  //   "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
+  //   "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
+  //   "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
+  // "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
+  // "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
+
+}
+
+function buildPrefix(prefix, url) {
+  // console.log("________________________");
+  // console.log("PREFIX " + prefix + ": <" + url + ">" + "\n");
+  // console.log("________________________");
+  return "PREFIX " + prefix + ": <" + url + ">";
+}
+
+function queryAll() {
   const prefixes = {
     doco: "http://purl.org/spar/doco/",
     dcterms: "http://purl.org/dc/terms/",
@@ -156,24 +195,32 @@ function buildQuery(req, res) {
     linkflows: "https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#"
   };
 
-  var articleTrustyURI = "http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1";
+  var prefixesString;
 
-  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact  ?actionNeeded " + "\n" +
-  "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
-    "?reviewComment linkflows:refersTo ?part . " + "\n" +
-    "VALUES ?partType { doco:Article doco:Section doco:Paragraph } " + "\n" +
-    "?part a ?partType ." + "\n" +
-    "VALUES ?aspect { linkflows:SyntaxComment linkflows:StyleComment linkflows:ContentComment } " + "\n" +
-    "?reviewComment a ?aspect ." + "\n" +
-    "VALUES ?posNeg { linkflows:PositiveComment linkflows:NeutralComment linkflows:NegativeComment }" + "\n" +
-    "?reviewComment a ?posNeg ." + "\n" +
-    "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
-    "FILTER (?impact = '1'^^xsd:positiveInteger || ?impact = '2'^^xsd:positiveInteger || ?impact = '3'^^xsd:positiveInteger || ?impact = '4'^^xsd:positiveInteger || ?impact = '5'^^xsd:positiveInteger) ." + "\n" +
-    "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
-    "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
-    "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
-  "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
-  "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
-
-  console.log(prefixes + "\n" + query);
+  for (var prefix in prefixes) {
+    // console.log(prefix, prefixes[prefix]);
+    console.log(buildPrefix(prefix, prefixes[prefix]));
+    // prefixesString.concat(buildPrefix(prefix, prefixes[prefix]));
+  }
+  //
+  // var articleTrustyURI = "http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1";
+  //
+  // var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact  ?actionNeeded " + "\n" +
+  // "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
+  //   "?reviewComment linkflows:refersTo ?part . " + "\n" +
+  //   "VALUES ?partType { doco:Article doco:Section doco:Paragraph } " + "\n" +
+  //   "?part a ?partType ." + "\n" +
+  //   "VALUES ?aspect { linkflows:SyntaxComment linkflows:StyleComment linkflows:ContentComment } " + "\n" +
+  //   "?reviewComment a ?aspect ." + "\n" +
+  //   "VALUES ?posNeg { linkflows:PositiveComment linkflows:NeutralComment linkflows:NegativeComment }" + "\n" +
+  //   "?reviewComment a ?posNeg ." + "\n" +
+  //   "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
+  //   "FILTER (?impact = '1'^^xsd:positiveInteger || ?impact = '2'^^xsd:positiveInteger || ?impact = '3'^^xsd:positiveInteger || ?impact = '4'^^xsd:positiveInteger || ?impact = '5'^^xsd:positiveInteger) ." + "\n" +
+  //   "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
+  //   "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
+  //   "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
+  // "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
+  // "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
+  //
+  // console.log(prefixesString + "\n" + query);
 }
