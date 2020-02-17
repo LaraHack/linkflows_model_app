@@ -29,8 +29,17 @@ var testQuery2 = "SELECT DISTINCT ?concept WHERE { ?s a ?concept .} LIMIT 50";
 var testQuery3 = "SELECT (COUNT(*) as ?Triples) WHERE { ?s ?p ?o .}";
 var testQuery4 = "SELECT * WHERE { ?article a doco:Article . ?article dcterms:title ?title .}";
 
+// add prefixes to the query
+var queryPrefixes = buildPrefixes(prefixes);
+
 function test(req, res) {
   const SPARQLClient = new Client(sparqlEndpoint2);
+
+  SPARQLClient.setOptions(
+  "text/csv",//"text/html", //"application/sparql-results+json", "application/json",
+  prefixes,
+  // graph IRI here "http://www.myschema.org/resource/"
+  );
 
   SPARQLClient.query(testQuery4)
     .then((results) => {
@@ -68,9 +77,6 @@ function buildQuery(req, res) {
   console.log("compulsory:" + checkboxes.compulsory);
   console.log("suggestion:" + checkboxes.suggestion);
   console.log("no_action:" + checkboxes.no_action);
-
-  // add prefixes to the query
-  var queryPrefixes = buildPrefixes(prefixes);
 
   // write query
   var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded " + "\n" +
@@ -131,7 +137,9 @@ function buildQuery(req, res) {
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
   "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
 
-  console.log(queryPrefixes + query);
+  console.log(query);
+
+  return query;
 }
 
 function buildPrefix(prefix, url) {
@@ -172,5 +180,6 @@ function queryAll() {
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
   "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
 
-  console.log(queryPrefixes + query);
+  // console.log(queryPrefixes + query);
+  return queryPrefixes + query;
 }
