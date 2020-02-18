@@ -24,7 +24,7 @@ router.get('/csv', (req, res, next) => {
     // console.log("BODY REQ");
     // console.log(req.query);
     // console.log("/BODY REQ");
-    sparqlQueries.buildQuery(req, res);
+    sparqlQueries.test(req, res);
 });
 
 module.exports = router;

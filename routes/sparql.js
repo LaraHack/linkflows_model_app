@@ -5,7 +5,6 @@ const sparqlQueries = require('../controllers/sparqlQueries');
 /* GET . */
 router.get('/', (req, res, next) => {
   sparqlQueries.test(req, res);
-    // sparqlQueries.buildQuery(req, res);
 });
 
 /* PUT . */

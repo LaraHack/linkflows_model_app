@@ -7,8 +7,7 @@ const fs = require('fs');
 const {Client, Node, Text, Data, Triple} = require('virtuoso-sparql-client');
 
 module.exports = {
-  test,
-  buildQuery
+  test
 };
 
 const sparqlEndpoint1 = "http://dbpedia.org/sparql";
@@ -41,25 +40,25 @@ function test(req, res) {
   // graph IRI here "http://www.myschema.org/resource/"
   );
 
-  SPARQLClient.query(testQuery4)
-    .then((results) => {
-      console.log("Inside function");
-      console.log(results);
-      console.log("IN JSON++++++++++++++++");
-      console.log(JSON.stringify(results));
-      res.send(results);
-    })
-    .catch((err) => {
-      console.log("Inside error");
-      console.log(err);
-      res.send(error);
-    });
+  var testQuery = buildQuery(req.query);
+  console.log(testQuery);
+
+  // SPARQLClient.query(testQuery4)
+  //   .then((results) => {
+  //     console.log("Inside function");
+  //     console.log(results);
+  //     // console.log("IN JSON++++++++++++++++");
+  //     // console.log(JSON.stringify(results));
+  //     res.send(results);
+  //   })
+  //   .catch((err) => {
+  //     console.log("Inside error");
+  //     console.log(err);
+  //     res.send(error);
+  //   });
 };
 
-function buildQuery(req, res) {
-  //get values from checkboxes sent by client
-  var checkboxes = req.query;
-
+function buildQuery(checkboxes) {
   console.log("article:" + checkboxes.article);
   console.log("section:" + checkboxes.section);
   console.log("paragraph:" + checkboxes.paragraph);
@@ -137,7 +136,7 @@ function buildQuery(req, res) {
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
   "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
 
-  console.log(query);
+  // console.log(query);
 
   return query;
 }
