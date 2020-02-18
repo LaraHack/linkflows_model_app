@@ -43,7 +43,7 @@ function test(req, res) {
   var testQuery = buildQuery(req.query);
   console.log(testQuery);
 
-  SPARQLClient.query(testQuery4)
+  SPARQLClient.query(testQuery)
     .then((results) => {
       console.log("Inside function");
       console.log(results);
