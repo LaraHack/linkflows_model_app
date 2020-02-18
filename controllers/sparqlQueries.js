@@ -35,7 +35,7 @@ function test(req, res) {
   const SPARQLClient = new Client(sparqlEndpoint2);
 
   SPARQLClient.setOptions(
-  "text/csv",//"text/html", //"application/sparql-results+json", "application/json",
+  "text/csv", // "application/javascript, ""text/html", //"application/sparql-results+json", "application/json",
   prefixes,
   // graph IRI here "http://www.myschema.org/resource/"
   );
@@ -43,19 +43,19 @@ function test(req, res) {
   var testQuery = buildQuery(req.query);
   console.log(testQuery);
 
-  // SPARQLClient.query(testQuery4)
-  //   .then((results) => {
-  //     console.log("Inside function");
-  //     console.log(results);
-  //     // console.log("IN JSON++++++++++++++++");
-  //     // console.log(JSON.stringify(results));
-  //     res.send(results);
-  //   })
-  //   .catch((err) => {
-  //     console.log("Inside error");
-  //     console.log(err);
-  //     res.send(error);
-  //   });
+  SPARQLClient.query(testQuery4)
+    .then((results) => {
+      console.log("Inside function");
+      console.log(results);
+      // console.log("IN JSON++++++++++++++++");
+      // console.log(JSON.stringify(results));
+      res.send(results);
+    })
+    .catch((err) => {
+      console.log("Inside error");
+      console.log(err);
+      res.send(error);
+    });
 };
 
 function buildQuery(checkboxes) {
