@@ -4,7 +4,6 @@ const getCsvCtrl = require('../controllers/getCsv');
 const sparqlQueries = require('../controllers/sparqlQueries');
 
 /* GET . */
-// router.get('/csv', getCsvCtrl.downloadCsv);
 router.get('/csv', (req, res, next) => {
     // adding appropriate headers, so browsers can start downloading
     // file as soon as this request starts to get served
@@ -19,12 +18,12 @@ router.get('/csv', (req, res, next) => {
 
     // res.download(dataEditors);
     // res.status(200).send(getCsvCtrl.downloadCsv(req, res));
-    // getCsvCtrl.downloadCsv(req, res);
+    getCsvCtrl.downloadCsv(req, res);
 
     // console.log("BODY REQ");
     // console.log(req.query);
     // console.log("/BODY REQ");
-    sparqlQueries.test(req, res);
+    // sparqlQueries.test(req, res);
 });
 
 module.exports = router;
