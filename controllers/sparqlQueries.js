@@ -136,7 +136,7 @@ function buildQuery(checkboxes) {
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
   "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
 
-  // console.log(query);
+  console.log(query);
 
   return query;
 }
