@@ -40,10 +40,10 @@ function test(req, res) {
   // graph IRI here "http://www.myschema.org/resource/"
   );
 
-  var testQuery = buildQuery(req.query);
-  console.log(testQuery);
+  var sparqlQuery = buildQuery(req.query);
+  console.log(sparqlQuery);
 
-  SPARQLClient.query(testQuery)
+  SPARQLClient.query(sparqlQuery)
     .then((results) => {
       console.log("Inside function");
       console.log(results);
