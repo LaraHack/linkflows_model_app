@@ -78,7 +78,7 @@ function buildQuery(checkboxes) {
   console.log("no_action:" + checkboxes.no_action);
 
   // write query
-  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded " + "\n" +
+  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded ?reviewCommentContent" + "\n" +
   "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
     "?reviewComment linkflows:refersTo ?part . " + "\n" +
     "VALUES ?partType { " +
@@ -131,6 +131,7 @@ function buildQuery(checkboxes) {
       ((checkboxes.no_action == 'true') ? ("linkflows:NoActionNeededComment ") : "" ) +
     "} " + "\n" +
     "?reviewComment a ?actionNeeded ." +  "\n" +
+    "?reviewComment linkflows:hasCommentText ?reviewCommentContent ." +  "\n" +
     "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
     "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
@@ -161,7 +162,7 @@ function queryAll() {
   var queryPrefixes = buildPrefixes(prefixes);
 
   // write query
-  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded " + "\n" +
+  var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded ?reviewCommentContent" + "\n" +
   "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
     "?reviewComment linkflows:refersTo ?part . " + "\n" +
     "VALUES ?partType { doco:Article doco:Section doco:Paragraph } " + "\n" +
@@ -174,6 +175,7 @@ function queryAll() {
     "FILTER (?impact = '1'^^xsd:positiveInteger || ?impact = '2'^^xsd:positiveInteger || ?impact = '3'^^xsd:positiveInteger || ?impact = '4'^^xsd:positiveInteger || ?impact = '5'^^xsd:positiveInteger) ." + "\n" +
     "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
     "?reviewComment a ?actionNeeded ." +  "\n" +
+    "?reviewComment linkflows:hasCommentText ?reviewCommentContent ." +  "\n" +
     "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
     "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
