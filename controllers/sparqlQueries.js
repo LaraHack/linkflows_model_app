@@ -11,7 +11,7 @@ module.exports = {
 };
 
 const sparqlEndpoint1 = "http://dbpedia.org/sparql";
-const sparqlEndpoint2 = "http://localhost:8890/sparql";
+const sparqlEndpoint2 = "http://db:8890/sparql";
 
 const prefixes = {
   doco: "http://purl.org/spar/doco/",
