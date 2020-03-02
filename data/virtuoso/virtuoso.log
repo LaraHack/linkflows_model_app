@@ -140,3 +140,39 @@
 16:03:18 Server received signal 15
 16:03:18 Initiating quick shutdown
 16:03:18 Server shutdown complete
+
+		Mon Mar 02 2020
+10:03:19 OpenLink Virtuoso Universal Server
+10:03:19 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+10:03:19 uses parts of OpenSSL, PCRE, Html Tidy
+10:03:19 Database version 3126
+10:03:19 SQL Optimizer enabled (max 1000 layouts)
+10:03:20 Compiler unit is timed at 0.000137 msec
+10:03:21 Roll forward started
+10:03:21 Roll forward complete
+10:03:21 Checkpoint started
+10:03:21 Checkpoint finished, log reused
+10:03:21 Checkpoint started
+10:03:21 Checkpoint finished, log reused
+10:03:23 HTTP/WebDAV server online at 8890
+10:03:23 Server online at 1111 (pid 1)
+10:08:18 Server received signal 15
+10:08:18 Initiating quick shutdown
+10:08:18 Server shutdown complete
+
+		Mon Mar 02 2020
+10:08:38 OpenLink Virtuoso Universal Server
+10:08:38 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+10:08:38 uses parts of OpenSSL, PCRE, Html Tidy
+10:08:38 Database version 3126
+10:08:38 SQL Optimizer enabled (max 1000 layouts)
+10:08:39 Compiler unit is timed at 0.000142 msec
+10:08:40 Roll forward started
+10:08:40 Roll forward complete
+10:08:40 Checkpoint started
+10:08:40 Checkpoint finished, log reused
+10:08:40 HTTP/WebDAV server online at 8890
+10:08:40 Server online at 1111 (pid 1)
+10:19:07 Server received signal 15
+10:19:07 Initiating quick shutdown
+10:19:07 Server shutdown complete
