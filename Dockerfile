@@ -1,2 +1,2 @@
 FROM tenforce/virtuoso
-ADD ./virtuoso/data/virtuoso/dumps /data/dumps
+ADD ./data/virtuoso/dumps /data/dumps

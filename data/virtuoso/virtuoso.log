@@ -176,3 +176,108 @@
 10:19:07 Server received signal 15
 10:19:07 Initiating quick shutdown
 10:19:07 Server shutdown complete
+
+		Fri Apr 17 2020
+15:14:00 OpenLink Virtuoso Universal Server
+15:14:00 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+15:14:00 uses parts of OpenSSL, PCRE, Html Tidy
+15:14:00 Database version 3126
+15:14:00 SQL Optimizer enabled (max 1000 layouts)
+15:14:02 Compiler unit is timed at 0.000217 msec
+15:14:02 Roll forward started
+15:14:03     21 transactions, 1732 bytes replayed (100 %)
+15:14:03 Roll forward complete
+15:14:03 Checkpoint started
+15:14:03 Checkpoint finished, log reused
+15:14:05 HTTP/WebDAV server online at 8890
+15:14:05 Server online at 1111 (pid 1)
+15:18:43 Server received signal 15
+15:18:43 Initiating quick shutdown
+15:18:43 Server shutdown complete
+
+		Fri Apr 17 2020
+15:18:52 OpenLink Virtuoso Universal Server
+15:18:52 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+15:18:52 uses parts of OpenSSL, PCRE, Html Tidy
+15:18:52 Database version 3126
+15:18:52 SQL Optimizer enabled (max 1000 layouts)
+15:18:53 Compiler unit is timed at 0.000268 msec
+15:18:54 Roll forward started
+15:18:54     3 transactions, 185 bytes replayed (100 %)
+15:18:54 Roll forward complete
+15:18:55 Checkpoint started
+15:18:55 Checkpoint finished, log reused
+15:18:57 HTTP/WebDAV server online at 8890
+15:18:57 Server online at 1111 (pid 1)
+15:19:34 Server received signal 15
+15:19:34 Initiating quick shutdown
+15:19:34 Server shutdown complete
+
+		Fri Apr 17 2020
+15:19:45 OpenLink Virtuoso Universal Server
+15:19:45 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+15:19:45 uses parts of OpenSSL, PCRE, Html Tidy
+15:19:45 Database version 3126
+15:19:45 SQL Optimizer enabled (max 1000 layouts)
+15:19:46 Compiler unit is timed at 0.000287 msec
+15:19:48 Roll forward started
+15:19:48     3 transactions, 185 bytes replayed (100 %)
+15:19:48 Roll forward complete
+15:19:48 Checkpoint started
+15:19:49 Checkpoint finished, log reused
+15:19:49 HTTP/WebDAV server online at 8890
+15:19:49 Server online at 1111 (pid 1)
+15:21:05 Server received signal 15
+15:21:05 Initiating quick shutdown
+15:21:05 Server shutdown complete
+
+		Fri Apr 17 2020
+15:21:36 OpenLink Virtuoso Universal Server
+15:21:36 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+15:21:36 uses parts of OpenSSL, PCRE, Html Tidy
+15:21:36 Database version 3126
+15:21:36 SQL Optimizer enabled (max 1000 layouts)
+15:21:37 Compiler unit is timed at 0.000286 msec
+15:21:38 Roll forward started
+15:21:38     3 transactions, 185 bytes replayed (100 %)
+15:21:38 Roll forward complete
+15:21:39 Checkpoint started
+15:21:39 Checkpoint finished, log reused
+15:21:39 HTTP/WebDAV server online at 8890
+15:21:39 Server online at 1111 (pid 1)
+15:23:49 Server received signal 15
+15:23:49 Initiating quick shutdown
+15:23:49 Server shutdown complete
+
+		Fri Apr 17 2020
+15:24:04 OpenLink Virtuoso Universal Server
+15:24:04 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+15:24:04 uses parts of OpenSSL, PCRE, Html Tidy
+15:24:04 Database version 3126
+15:24:04 SQL Optimizer enabled (max 1000 layouts)
+15:24:06 Compiler unit is timed at 0.000258 msec
+15:24:07 Roll forward started
+15:24:07     3 transactions, 185 bytes replayed (100 %)
+15:24:07 Roll forward complete
+15:24:07 Checkpoint started
+15:24:07 Checkpoint finished, log reused
+15:24:09 HTTP/WebDAV server online at 8890
+15:24:09 Server online at 1111 (pid 1)
+15:27:11 Server received signal 15
+15:27:11 Initiating quick shutdown
+15:27:11 Server shutdown complete
+
+		Fri Apr 17 2020
+15:27:26 OpenLink Virtuoso Universal Server
+15:27:26 Version 07.20.3215-pthreads for Linux as of Nov 15 2017
+15:27:26 uses parts of OpenSSL, PCRE, Html Tidy
+15:27:26 Database version 3126
+15:27:26 SQL Optimizer enabled (max 1000 layouts)
+15:27:28 Compiler unit is timed at 0.000330 msec
+15:27:29 Roll forward started
+15:27:29     3 transactions, 185 bytes replayed (100 %)
+15:27:29 Roll forward complete
+15:27:29 Checkpoint started
+15:27:29 Checkpoint finished, log reused
+15:27:31 HTTP/WebDAV server online at 8890
+15:27:31 Server online at 1111 (pid 1)
