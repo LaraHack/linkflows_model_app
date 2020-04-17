@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    image: larahack/linkflows_model_app
+    image: linkflows
     ports:
       - "8081:8081"
   db:
@@ -15,6 +15,6 @@ services:
     ports:
       - "8890:8890"
   client:
-    image: larahack/linkflows_interface
+    image: linkflows_interface
     ports:
       - "80:80"
