@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "clean-css": "^4.2.3",
+    "constantinople": "^4.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "csv": "^5.3.2",
@@ -17,8 +19,10 @@
     "express-es6-template-engine": "^2.2.1",
     "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
+    "minimist": "^1.2.5",
     "morgan": "~1.9.1",
+    "pug": "^2.0.4",
+    "uglify-js": "^3.9.1",
     "virtuoso-sparql-client": "^0.2.2"
   }
 }
