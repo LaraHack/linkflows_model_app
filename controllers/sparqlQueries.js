@@ -33,7 +33,7 @@ var testQuery4 = "SELECT * WHERE { ?article a doco:Article . ?article dcterms:ti
 var queryPrefixes = buildPrefixes(prefixes);
 
 function test(req, res) {
-  const SPARQLClient = new Client(sparqlEndpoint2);
+  const SPARQLClient = new Client(sparqlEndpoint3);
 
   SPARQLClient.setOptions(
   "text/csv", // "application/javascript, ""text/html", //"application/sparql-results+json", "application/json",
