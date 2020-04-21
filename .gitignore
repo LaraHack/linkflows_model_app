@@ -1,2 +1,7 @@
-data/
+# ignore these folders
+data/virtuoso/*
 node_modules/
+
+# do not ignore these files
+!data/virtuoso/toLoad
+!data/virtuoso/toLoad/*
