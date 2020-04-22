@@ -8,6 +8,7 @@ const {Client, Node, Text, Data, Triple} = require('virtuoso-sparql-client');
 
 module.exports = {
   getReviewCommentsByReviewers,
+  getArticleMainSections,
   getReviewCommentsBySection
 };
 
@@ -24,6 +25,7 @@ const prefixes = {
   linkflows: "https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#"
 };
 
+// this is hardcoded for now
 const articleTrustyURI = "http://purl.org/np/RAnVHrB5TSxLeOc6XTVafmd9hvosbs4c-4Ck0XRh_CgGk#articleVersion1";
 
 var testQuery1 = "DESCRIBE <http://dbpedia.org/resource/Sardinia>";
@@ -33,6 +35,20 @@ var testQuery4 = "SELECT * WHERE { ?article a doco:Article . ?article dcterms:ti
 
 // add prefixes to the query
 var queryPrefixes = buildPrefixes(prefixes);
+
+function buildPrefix(prefix, url) {
+  return "PREFIX " + prefix + ": <" + url + ">" + "\n";
+}
+
+function buildPrefixes(prefixes) {
+  var prefixesString = "";
+
+  for (var prefix in prefixes) {
+    prefixesString = prefixesString.concat(buildPrefix(prefix, prefixes[prefix]));
+  }
+
+  return prefixesString;
+}
 
 function getReviewCommentsByReviewers(req, res) {
   const SPARQLClient = new Client(sparqlEndpoint2);
@@ -52,6 +68,27 @@ function getReviewCommentsByReviewers(req, res) {
       console.log(results);
       // console.log("IN JSON++++++++++++++++");
       // console.log(JSON.stringify(results));
+      res.send(results);
+    })
+    .catch((error) => {
+      console.log("ERROR:" + error);
+      res.send(error);
+    });
+};
+
+function getArticleMainSections(req, res) {
+  const SPARQLClient = new Client(sparqlEndpoint2);
+
+  SPARQLClient.setOptions(
+  "text/csv",
+  prefixes,
+  );
+
+  var sparqlQuery = queryArticleMainSections();
+  console.log(sparqlQuery);
+
+  SPARQLClient.query(sparqlQuery)
+    .then((results) => {
       res.send(results);
     })
     .catch((error) => {
@@ -81,55 +118,7 @@ function getReviewCommentsBySection(req, res) {
     });
 };
 
-function queryReviewCommentsBySection() {
-  // write query
-  var query = "SELECT ?sectionNumberLiteral AS ?Section, ?sectionTitleLiteral AS ?Title, ?reviewComment, ?aspect, ?posNeg, ?impact, ?actionNeeded, ?commentText" + "\n" +
-  "WHERE { <" + articleTrustyURI + "> dcterms:title ?title ;" + "\n" +
-    "  po:contains ?section . " + "\n" +
-    "?section a doco:Section ;" + "\n" +
-    "  po:containsAsHeader ?sectionNumber, ?sectionTitle ." + "\n" +
-    "?sectionNumber a doco:SectionLabel ;" + "\n" +
-    "  c4o:hasContent ?sectionNumberLiteral ." + "\n" +
-    "?sectionTitle a doco:SectionTitle ;" + "\n" +
-    "  c4o:hasContent ?sectionTitleLiteral ." + "\n" +
-    "?section (po:contains)* ?subpart." + "\n" +
-    "?reviewComment a linkflows:ReviewComment ;" + "\n" +
-    " linkflows:refersTo ?subpart." + "\n" +
-    "?subpart a ?part ." + "\n" +
-    "VALUES ?part { doco:Section doco:Paragraph }" + "\n" +
-    "VALUES ?aspect { linkflows:SyntaxComment linkflows:StyleComment linkflows:ContentComment }" + "\n" +
-    "?reviewComment a ?aspect ." + "\n" +
-    "VALUES ?posNeg { linkflows:PositiveComment linkflows:NeutralComment linkflows:NegativeComment }" + "\n" +
-    "?reviewComment a ?posNeg ." + "\n" +
-    "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
-    "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
-    "?reviewComment a ?actionNeeded ." + "\n" +
-    "?reviewComment linkflows:hasCommentText ?commentText ." + "\n" +
-  "} ORDER BY ASC(?sectionNumberLiteral)";
-
-  console.log(query);
-  return query;
-}
-
 function queryReviewCommentsByReviewers(checkboxes) {
-  // console.log("article:" + checkboxes.article);
-  // console.log("section:" + checkboxes.section);
-  // console.log("paragraph:" + checkboxes.paragraph);
-  // console.log("syntax:" + checkboxes.syntax);
-  // console.log("style:" + checkboxes.style);
-  // console.log("content:" + checkboxes.content);
-  // console.log("negative:" + checkboxes.negative);
-  // console.log("neutral:" + checkboxes.neutral);
-  // console.log("positive:" + checkboxes.positive);
-  // console.log("I1:" + checkboxes.I1);
-  // console.log("I2:" + checkboxes.I2);
-  // console.log("I3:" + checkboxes.I3);
-  // console.log("I4:" + checkboxes.I4);
-  // console.log("I5:" + checkboxes.I5);
-  // console.log("compulsory:" + checkboxes.compulsory);
-  // console.log("suggestion:" + checkboxes.suggestion);
-  // console.log("no_action:" + checkboxes.no_action);
-
   // write query
   var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded ?reviewCommentContent" + "\n" +
   "WHERE { <" + articleTrustyURI + "> (po:contains)* ?part ." + "\n" +
@@ -195,23 +184,9 @@ function queryReviewCommentsByReviewers(checkboxes) {
   return query;
 }
 
-function buildPrefix(prefix, url) {
-  return "PREFIX " + prefix + ": <" + url + ">" + "\n";
-}
-
-function buildPrefixes(prefixes) {
-  var prefixesString = "";
-
-  for (var prefix in prefixes) {
-    prefixesString = prefixesString.concat(buildPrefix(prefix, prefixes[prefix]));
-  }
-
-  return prefixesString;
-}
-
 // query for when all values are selected
 function queryAllReviewCommentsByReviewers() {
-  // add prefixes to the query
+  // add prefixes to the query, only neede if the prefixes option is not added to the SPARQLClient
   var queryPrefixes = buildPrefixes(prefixes);
 
   // write query
@@ -236,4 +211,51 @@ function queryAllReviewCommentsByReviewers() {
 
   // console.log(queryPrefixes + query);
   return queryPrefixes + query;
+}
+
+function queryArticleMainSections() {
+  // write query
+  var query = "SELECT ?sectionNumberLiteral AS ?Section, ?sectionTitleLiteral AS ?Title" + "\n" +
+  "WHERE { <" + articleTrustyURI + "> dcterms:title ?title ;" + "\n" +
+    "  po:contains ?section ." + "\n" +
+    "?section a doco:Section ;" + "\n" +
+    "  po:containsAsHeader ?sectionNumber, ?sectionTitle ." + "\n" +
+    "?sectionNumber a doco:SectionLabel ;" + "\n" +
+    "  c4o:hasContent ?sectionNumberLiteral ." + "\n" +
+    "?sectionTitle a doco:SectionTitle ;" + "\n" +
+    "  c4o:hasContent ?sectionTitleLiteral ." + "\n" +
+  "} ORDER BY ASC(?sectionNumberLiteral)";
+
+  console.log(query);
+  return query;
+}
+
+function queryReviewCommentsBySection() {
+  // write query
+  var query = "SELECT ?sectionNumberLiteral AS ?Section, ?sectionTitleLiteral AS ?Title, ?reviewComment, ?aspect, ?posNeg, ?impact, ?actionNeeded, ?commentText" + "\n" +
+  "WHERE { <" + articleTrustyURI + "> dcterms:title ?title ;" + "\n" +
+    "  po:contains ?section . " + "\n" +
+    "?section a doco:Section ;" + "\n" +
+    "  po:containsAsHeader ?sectionNumber, ?sectionTitle ." + "\n" +
+    "?sectionNumber a doco:SectionLabel ;" + "\n" +
+    "  c4o:hasContent ?sectionNumberLiteral ." + "\n" +
+    "?sectionTitle a doco:SectionTitle ;" + "\n" +
+    "  c4o:hasContent ?sectionTitleLiteral ." + "\n" +
+    "?section (po:contains)* ?subpart." + "\n" +
+    "?reviewComment a linkflows:ReviewComment ;" + "\n" +
+    " linkflows:refersTo ?subpart." + "\n" +
+    "?subpart a ?part ." + "\n" +
+    "VALUES ?part { doco:Section doco:Paragraph }" + "\n" +
+    "VALUES ?aspect { linkflows:SyntaxComment linkflows:StyleComment linkflows:ContentComment }" + "\n" +
+    "?reviewComment a ?aspect ." + "\n" +
+    "VALUES ?posNeg { linkflows:PositiveComment linkflows:NeutralComment linkflows:NegativeComment }" + "\n" +
+    "?reviewComment a ?posNeg ." + "\n" +
+    "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
+    "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
+    "?reviewComment a ?actionNeeded ." + "\n" +
+    "?reviewComment linkflows:hasCommentText ?commentText ." + "\n" +
+  "} ORDER BY ASC(?sectionNumberLiteral)";
+
+  console.log(query);
+  return query;
 }

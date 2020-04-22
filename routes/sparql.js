@@ -8,6 +8,11 @@ router.get('/commentsByReviewers', (req, res, next) => {
 });
 
 /* GET . */
+router.get('/mainSections', (req, res, next) => {
+  sparqlQueries.getArticleMainSections(req, res);
+});
+
+/* GET . */
 router.get('/commentsBySection', (req, res, next) => {
   sparqlQueries.getReviewCommentsBySection(req, res);
 });
