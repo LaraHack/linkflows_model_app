@@ -3,8 +3,13 @@ var router = express.Router();
 const sparqlQueries = require('../controllers/sparqlQueries');
 
 /* GET . */
-router.get('/', (req, res, next) => {
-  sparqlQueries.test(req, res);
+router.get('/commentsByReviewers', (req, res, next) => {
+  sparqlQueries.getReviewCommentsByReviewers(req, res);
+});
+
+/* GET . */
+router.get('/commentsBySection', (req, res, next) => {
+  sparqlQueries.getReviewCommentsBySection(req, res);
 });
 
 /* PUT . */

@@ -7,7 +7,8 @@ const fs = require('fs');
 const {Client, Node, Text, Data, Triple} = require('virtuoso-sparql-client');
 
 module.exports = {
-  test
+  getReviewCommentsByReviewers,
+  getReviewCommentsBySection
 };
 
 const sparqlEndpoint1 = "http://dbpedia.org/sparql";
@@ -19,6 +20,7 @@ const prefixes = {
   dcterms: "http://purl.org/dc/terms/",
   po: "http://www.essepuntato.it/2008/12/pattern#",
   prov: "http://www.w3.org/ns/prov#",
+  c4o: "http://purl.org/spar/c4o/",
   linkflows: "https://github.com/LaraHack/linkflows_model/blob/master/Linkflows.ttl#"
 };
 
@@ -32,8 +34,8 @@ var testQuery4 = "SELECT * WHERE { ?article a doco:Article . ?article dcterms:ti
 // add prefixes to the query
 var queryPrefixes = buildPrefixes(prefixes);
 
-function test(req, res) {
-  const SPARQLClient = new Client(sparqlEndpoint3);
+function getReviewCommentsByReviewers(req, res) {
+  const SPARQLClient = new Client(sparqlEndpoint2);
 
   SPARQLClient.setOptions(
   "text/csv", // "application/javascript, ""text/html", //"application/sparql-results+json", "application/json",
@@ -41,7 +43,7 @@ function test(req, res) {
   // graph IRI here "http://www.myschema.org/resource/"
   );
 
-  var sparqlQuery = buildQuery(req.query);
+  var sparqlQuery = queryReviewCommentsByReviewers(req.query);
   console.log(sparqlQuery);
 
   SPARQLClient.query(sparqlQuery)
@@ -53,30 +55,80 @@ function test(req, res) {
       res.send(results);
     })
     .catch((error) => {
-      console.log("Inside error");
-      console.log(error);
+      console.log("ERROR:" + error);
       res.send(error);
     });
 };
 
-function buildQuery(checkboxes) {
-  console.log("article:" + checkboxes.article);
-  console.log("section:" + checkboxes.section);
-  console.log("paragraph:" + checkboxes.paragraph);
-  console.log("syntax:" + checkboxes.syntax);
-  console.log("style:" + checkboxes.style);
-  console.log("content:" + checkboxes.content);
-  console.log("negative:" + checkboxes.negative);
-  console.log("neutral:" + checkboxes.neutral);
-  console.log("positive:" + checkboxes.positive);
-  console.log("I1:" + checkboxes.I1);
-  console.log("I2:" + checkboxes.I2);
-  console.log("I3:" + checkboxes.I3);
-  console.log("I4:" + checkboxes.I4);
-  console.log("I5:" + checkboxes.I5);
-  console.log("compulsory:" + checkboxes.compulsory);
-  console.log("suggestion:" + checkboxes.suggestion);
-  console.log("no_action:" + checkboxes.no_action);
+function getReviewCommentsBySection(req, res) {
+  const SPARQLClient = new Client(sparqlEndpoint2);
+
+  SPARQLClient.setOptions(
+  "text/csv",
+  prefixes,
+  );
+
+  var sparqlQuery = queryReviewCommentsBySection();
+  console.log(sparqlQuery);
+
+  SPARQLClient.query(sparqlQuery)
+    .then((results) => {
+      res.send(results);
+    })
+    .catch((error) => {
+      console.log("ERROR:" + error);
+      res.send(error);
+    });
+};
+
+function queryReviewCommentsBySection() {
+  // write query
+  var query = "SELECT ?sectionNumberLiteral AS ?Section, ?sectionTitleLiteral AS ?Title, ?reviewComment, ?aspect, ?posNeg, ?impact, ?actionNeeded, ?commentText" + "\n" +
+  "WHERE { <" + articleTrustyURI + "> dcterms:title ?title ;" + "\n" +
+    "  po:contains ?section . " + "\n" +
+    "?section a doco:Section ;" + "\n" +
+    "  po:containsAsHeader ?sectionNumber, ?sectionTitle ." + "\n" +
+    "?sectionNumber a doco:SectionLabel ;" + "\n" +
+    "  c4o:hasContent ?sectionNumberLiteral ." + "\n" +
+    "?sectionTitle a doco:SectionTitle ;" + "\n" +
+    "  c4o:hasContent ?sectionTitleLiteral ." + "\n" +
+    "?section (po:contains)* ?subpart." + "\n" +
+    "?reviewComment a linkflows:ReviewComment ;" + "\n" +
+    " linkflows:refersTo ?subpart." + "\n" +
+    "?subpart a ?part ." + "\n" +
+    "VALUES ?part { doco:Section doco:Paragraph }" + "\n" +
+    "VALUES ?aspect { linkflows:SyntaxComment linkflows:StyleComment linkflows:ContentComment }" + "\n" +
+    "?reviewComment a ?aspect ." + "\n" +
+    "VALUES ?posNeg { linkflows:PositiveComment linkflows:NeutralComment linkflows:NegativeComment }" + "\n" +
+    "?reviewComment a ?posNeg ." + "\n" +
+    "?reviewComment linkflows:hasImpact ?impact ." + "\n" +
+    "VALUES ?actionNeeded { linkflows:ActionNeededComment linkflows:SuggestionComment linkflows:NoActionNeededComment}" + "\n" +
+    "?reviewComment a ?actionNeeded ." + "\n" +
+    "?reviewComment linkflows:hasCommentText ?commentText ." + "\n" +
+  "} ORDER BY ASC(?sectionNumberLiteral)";
+
+  console.log(query);
+  return query;
+}
+
+function queryReviewCommentsByReviewers(checkboxes) {
+  // console.log("article:" + checkboxes.article);
+  // console.log("section:" + checkboxes.section);
+  // console.log("paragraph:" + checkboxes.paragraph);
+  // console.log("syntax:" + checkboxes.syntax);
+  // console.log("style:" + checkboxes.style);
+  // console.log("content:" + checkboxes.content);
+  // console.log("negative:" + checkboxes.negative);
+  // console.log("neutral:" + checkboxes.neutral);
+  // console.log("positive:" + checkboxes.positive);
+  // console.log("I1:" + checkboxes.I1);
+  // console.log("I2:" + checkboxes.I2);
+  // console.log("I3:" + checkboxes.I3);
+  // console.log("I4:" + checkboxes.I4);
+  // console.log("I5:" + checkboxes.I5);
+  // console.log("compulsory:" + checkboxes.compulsory);
+  // console.log("suggestion:" + checkboxes.suggestion);
+  // console.log("no_action:" + checkboxes.no_action);
 
   // write query
   var query = "SELECT ?reviewer ?reviewComment ?part ?aspect ?posNeg ?impact ?actionNeeded ?reviewCommentContent" + "\n" +
@@ -136,7 +188,7 @@ function buildQuery(checkboxes) {
     "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
     "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
-  "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
+  "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded";
 
   console.log(query);
 
@@ -158,7 +210,7 @@ function buildPrefixes(prefixes) {
 }
 
 // query for when all values are selected
-function queryAll() {
+function queryAllReviewCommentsByReviewers() {
   // add prefixes to the query
   var queryPrefixes = buildPrefixes(prefixes);
 
@@ -180,7 +232,7 @@ function queryAll() {
     "GRAPH ?assertion { ?reviewComment a linkflows:ReviewComment . }" + "\n" +
     "?assertion prov:wasAttributedTo ?reviewer ." + "\n" +
   "} GROUP BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded" + "\n" +
-  "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded"
+  "ORDER BY ?reviewer ?part ?aspect ?posNeg ?impact ?actionNeeded";
 
   // console.log(queryPrefixes + query);
   return queryPrefixes + query;
