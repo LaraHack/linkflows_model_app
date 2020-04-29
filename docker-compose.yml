@@ -12,8 +12,8 @@ services:
       DBA_PASSWORD: "admin"
     volumes:
       - ./data/virtuoso:/data
-    # ports:
-      # - "8890:8890"
+    ports:
+      - "18890:8890"
   client:
     image: larahack/linkflows_interface
     ports:
