@@ -13,7 +13,7 @@ module.exports = {
 };
 
 const sparqlEndpoint1 = "http://dbpedia.org/sparql";
-const sparqlEndpoint2 = "http://localhost:8890/sparql";
+const sparqlEndpoint2 = "http://localhost:18890/sparql";
 const sparqlEndpoint3 = "http://db:18890/sparql";
 
 const prefixes = {
