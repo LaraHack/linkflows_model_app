@@ -12,9 +12,9 @@ module.exports = {
   getReviewCommentsBySection
 };
 
-const sparqlEndpoint1 = "http://dbpedia.org/sparql";
-const sparqlEndpoint2 = "http://localhost:8890/sparql";
-const sparqlEndpoint3 = "http://db:8890/sparql";
+const sparqlEndpoint1 = "http://dbpedia.org/sparql"; // for testing
+const sparqlEndpoint2 = "http://localhost:8890/sparql"; // when running locally, outside container
+const sparqlEndpoint3 = "http://db:8890/sparql"; // when running inside container
 
 const prefixes = {
   doco: "http://purl.org/spar/doco/",
