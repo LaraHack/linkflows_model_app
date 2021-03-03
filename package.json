@@ -21,7 +21,7 @@
     "http-errors": "~1.6.3",
     "minimist": "^1.2.5",
     "morgan": "~1.9.1",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "uglify-js": "^3.9.1",
     "virtuoso-sparql-client": "^0.2.2"
   }
